@@ -5,13 +5,21 @@ var Model = {
                 apiId: appId
             });
 
-            VK.Auth.login(function(response) {
+            VK.Auth.getLoginStatus(response => {
                 if (response.session) {
                     resolve(response);
                 } else {
-                    reject(new Error('Не удалось авторизоваться'));
+                    authButton.addEventListener('click', () => {
+                        VK.Auth.login(function(response) {
+                            if (response.session) {
+                                resolve(response);
+                            } else {
+                                alert('Авторизация прошла не удачно!');
+                            }
+                        }, perms)});
                 }
-            }, perms);
+            });
+
         });
     },
     callApi: function(method, params) {
@@ -26,7 +34,7 @@ var Model = {
         });
     },
     getUser: function() {
-        return this.callApi('users.get', {});
+        return this.callApi('users.get', {name_case: 'gen'});
     },
     getMusic: function() {
         return this.callApi('audio.get', {});
@@ -36,5 +44,8 @@ var Model = {
     },
     getNews: function() {
         return this.callApi('newsfeed.get', {filters: 'post', count: 20});
+    },
+    getGroups: function () {
+        return this.callApi('groups.get', {extended: 1, v: 5.53})
     }
 };

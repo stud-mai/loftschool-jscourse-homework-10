@@ -15,8 +15,10 @@ Handlebars.registerHelper('formatDate', function(ts) {
 new Promise(function(resolve) {
     window.onload = resolve;
 }).then(function() {
-    return Model.login(5267932, 2 | 8 | 8192);
+    return Model.login(5267932, 2 | 8 | 8192 | 262144);
 }).then(function() {
+    document.querySelector('.panel').remove();
+    document.querySelector('.container').style.display = 'block';
     return Model.getUser().then(function(users) {
         header.innerHTML = View.render('header', users[0]);
     });
