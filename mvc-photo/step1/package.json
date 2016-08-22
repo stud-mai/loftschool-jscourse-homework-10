@@ -1,0 +1,8 @@
+{
+  "name": "mvc-photo-step1",
+  "version": "1.0.0",
+  "author": "stud_mai",
+  "dependencies": {
+    "handlebars": "^4.0.5"
+  }
+}

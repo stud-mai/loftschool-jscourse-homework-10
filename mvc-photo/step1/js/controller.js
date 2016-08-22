@@ -19,6 +19,7 @@ module.exports = {
     },
     photosRoute: function() {
         Model.getPhotos().then(function(photos) {
+            console.log(photos);
             results.innerHTML = View.render('photos', {list: photos});
         });
     }

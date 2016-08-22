@@ -106,5 +106,94 @@ module.exports = {
             }
             return photos;
         });
+
+        /*
+        /*
+        *********************
+        * Вариант с использованием рекурсии и setTimeout (должно быть использовано в Controller)
+        * *****
+        * Загружает комментарии к каждой фотографии (занимает 35 сек для ~100 фото)
+        * *******************
+        var code = 'var photoCall = API.photos.getAll({"extended": "1","count": 200,"v":"5.53"});' +
+                    'var photos = photoCall.items;' +
+                    'var count = photoCall.count;' +
+                    'var offset = 200;' +
+                    'while (offset < count){' +
+                        'var photoCall = API.photos.getAll({"owner_id":1,"offset":offset,"extended": "1","count": 200,"v":"5.53"});' +
+                        'photos = photos+photoCall.items;' +
+                        'offset = offset + 200;' +
+                    '}' +
+                    'return photos;';
+
+        this.callApi('execute', {code: code, v: 5.53}).then((photos) => {
+            function getCom(source, count) {
+                let code = ``;
+                if (count < source.length) {
+                    for (var i = count; i < count + 3; i++) {
+                        if (source[i]) {
+                            //console.log('Model.getComments('+i+');', source[i].id);
+                            Model.getComments(source[i].id).then((response) => {
+                                console.log(response)
+                            });
+                        }
+                    }
+                    count += 3;
+                    setTimeout(() => {
+                        getCom(source, count)
+                    }, 999);
+                }
+            };
+
+            getCom(photos, 0);
+        });
+        ******************
+        */
+    },
+    getComments: function(id) {
+        var code = `var commentCall = API.photos.getComments({"photo_id": "${id}","extended": "1","count": 100,"v":"5.53"});
+                    var comments = commentCall.items;
+                    var authors = commentCall.profiles;
+                    var count = commentCall.count;
+                    var offset = 100;
+                    while (offset < count && offset < 2500){
+                        var commentCall = API.photos.getComments({"offset":offset,"photo_id": "${id}","extended": "1","count": 100,"v":"5.53"});
+                        var comments = comments + commentCall.items;
+                        var authors = authors + commentCall.profiles;
+                        offset = offset + 100;
+                    }
+                    return {"comments": comments, "authors": authors};`;
+
+        return this.callApi('execute', {code: code, v: 5.53});
+    },
+    getAllComments: function(offset /*, comments = []*/) {
+        //return this.callApi('photos.getAllComments', {offset: offset, count: 100, v: 5.53})
+
+        /* Версия использования рекурсии без промиса
+        /*
+        var that = this;
+
+        return VK.api('photos.getAllComments', {offset: offset, count: 100, v: 5.53}, (response) => {
+            var commentsNum = parseInt(response.response.count);
+
+            comments = comments.concat(response.response.items);
+            if (commentsNum > 100 && comments.length !== commentsNum) that.getComments(comments.length, comments)
+            else return comments;
+        });
+        */
+
+        /* Версия использования рекурсии для промиса
+        /*
+        var call = this.callApi('photos.getAllComments', {offset: offset, count: 100, v: 5.53}),
+            that = this, temp;
+
+        temp = call.then(function(response){
+            var commentsNum = parseInt(response.count);
+            comments = comments.concat(response.items);
+            if (commentsNum > 100 && comments.length !== commentsNum) that.getComments(comments.length, comments)
+            else return comments;
+        });
+
+        return temp.then(comments => {console.log(comments)});
+        */
     }
 };
