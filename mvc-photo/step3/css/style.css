@@ -1,0 +1,54 @@
+.friend {
+    float: left;
+    margin: 15px;
+}
+
+body
+{
+    padding-bottom: 50px;
+}
+
+.control-panel button
+{
+    margin: 2px;
+}
+
+.panel-auth{
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto!important;
+    width: 300px;
+    height: 175px;
+    text-align: center;
+}
+
+.panel-body-auth{
+    position: absolute;
+    padding: 15px;
+    top: 60%;
+    left: 0;
+    transform: translate(0%,-50%);
+}
+
+#authButton:hover{
+    cursor: pointer;
+}
+
+.container{
+    display: none;
+}
+.col-xs-4:nth-child(3n+1){
+    clear: left;
+}
+.col-xs-4{
+    margin-bottom: 50px;
+}
+
+.caption{
+    display: inline-block;
+    margin-left: 3%;
+    width: calc(100% - 60px);
+}
