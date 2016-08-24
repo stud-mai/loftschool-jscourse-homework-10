@@ -15,7 +15,12 @@ Handlebars.registerHelper('formatDate', function(ts) {
 });
 
 module.exports = {
+    addPartial: function(){
+        var templatePartial = document.getElementById('sortedPhotosTemplate');
+        Handlebars.registerPartial('albumPhotos',templatePartial.innerHTML);
+    },
     render: function(templateName, model) {
+
         templateName = templateName + 'Template';
 
         var templateElement = document.getElementById(templateName),

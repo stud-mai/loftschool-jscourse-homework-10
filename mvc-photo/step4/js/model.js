@@ -107,6 +107,9 @@ module.exports = {
                     }
                 });
                 photos[i].comments.count = counter;
+                photos[i].comments.data.sort(function(comment1,comment2){
+                    return comment1.date - comment2.date;
+                });
             }
             for (var album of albums){
                 album.photos = [];

@@ -19,6 +19,7 @@ new Promise(function(resolve) {
 }).then(function() {
     document.querySelector('.panel').remove();
     document.querySelector('.container').style.display = 'block';
+    View.addPartial();
     return Model.getUser().then(function(users) {
         header.innerHTML = View.render('header', users[0]);
     });

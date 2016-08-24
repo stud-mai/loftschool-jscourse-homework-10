@@ -104,49 +104,7 @@
                 </div>
             </div>
             <div class="panel-body">
-                {{#each photos}}
-                <div class="col-xs-4">
-                    <img src="{{photo_604}}" class="img-thumbnail">
-                    <div class="text-right">
-                        {{#with likes}}
-                            <span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
-                            &nbsp;{{count}}&nbsp;
-                        {{/with}}
-                        {{#with reposts}}
-                            <span class="glyphicon glyphicon-share" aria-hidden="true"></span>
-                            &nbsp;{{count}}&nbsp;
-                        {{/with}}
-                        {{#with comments}}
-                            <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
-                            &nbsp;{{count}}&nbsp;
-                        {{/with}}
-                    </div>
-                    <ul class="list-group">
-                        {{#with comments}}
-                        {{#if count}}
-                        {{#each data}}
-                        <li class="list-group-item">
-                            {{#with from_id}}
-                            <img src="{{photo_50}}" class="pull-left img-circle">
-                            <div class="caption">
-                                <h4>{{first_name}} {{last_name}}</h4>
-                                {{/with}}
-                                <p>{{text}}</p>
-                                <div>{{formatDate date}}</div>
-                            </div>
-                        </li>
-                        {{/each}}
-                        {{else}}
-                        <li class="list-group-item">
-                            <div class="caption">
-                                <p>К этому фото нет комментариев.</p>
-                            </div>
-                        </li>
-                        {{/if}}
-                        {{/with}}
-                    </ul>
-                </div>
-                {{/each}}
+                {{> albumPhotos}}
             </div>
         </div>
     {{/each}}
@@ -157,41 +115,33 @@
     <div class="col-xs-4">
         <img src="{{photo_604}}" class="img-thumbnail">
         <div class="text-right">
-            {{#with likes}}
             <span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
-            &nbsp;{{count}}&nbsp;
-            {{/with}}
-            {{#with reposts}}
+            &nbsp;{{likes.count}}&nbsp;
             <span class="glyphicon glyphicon-share" aria-hidden="true"></span>
-            &nbsp;{{count}}&nbsp;
-            {{/with}}
-            {{#with comments}}
+            &nbsp;{{reposts.count}}&nbsp;
             <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
-            &nbsp;{{count}}&nbsp;
-            {{/with}}
+            &nbsp;{{comments.count}}&nbsp;
         </div>
         <ul class="list-group">
             {{#with comments}}
-            {{#if count}}
-            {{#each data}}
-            <li class="list-group-item">
-                {{#with from_id}}
-                <img src="{{photo_50}}" class="pull-left img-circle">
-                <div class="caption">
-                    <h4>{{first_name}} {{last_name}}</h4>
-                    {{/with}}
-                    <p>{{text}}</p>
-                    <div>{{formatDate date}}</div>
-                </div>
-            </li>
-            {{/each}}
-            {{else}}
-            <li class="list-group-item">
-                <div class="caption">
-                    <p>К этому фото нет комментариев.</p>
-                </div>
-            </li>
-            {{/if}}
+                {{#if count}}
+                    {{#each data}}
+                    <li class="list-group-item">
+                        <img src="{{from_id.photo_50}}" class="pull-left img-circle">
+                        <div class="caption">
+                            <h4>{{from_id.first_name}} {{from_id.last_name}}</h4>
+                            <p>{{text}}</p>
+                            <div>{{formatDate date}}</div>
+                        </div>
+                    </li>
+                    {{/each}}
+                {{else}}
+                    <li class="list-group-item">
+                        <div class="caption">
+                            <p>К этому фото нет комментариев.</p>
+                        </div>
+                    </li>
+                {{/if}}
             {{/with}}
         </ul>
     </div>
